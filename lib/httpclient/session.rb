@@ -13,6 +13,7 @@
 
 
 require 'socket'
+require 'celluloid/io'
 require 'thread'
 require 'stringio'
 require 'zlib'
@@ -395,9 +396,9 @@ class HTTPClient
       if OpenSSL::SSL.const_defined?("SSLContext")
         ctx = OpenSSL::SSL::SSLContext.new
         @context.set_context(ctx)
-        ssl_socket = OpenSSL::SSL::SSLSocket.new(socket, ctx)
+        ssl_socket = Celluloid::IO::SSLSocket.new(socket, ctx)
       else
-        ssl_socket = OpenSSL::SSL::SSLSocket.new(socket)
+        ssl_socket = Cellulid::IO::SSLSocket.new(socket)
         @context.set_context(ssl_socket)
       end
       ssl_socket
@@ -802,9 +803,9 @@ class HTTPClient
         if str = @test_loopback_http_response.shift
           socket = LoopBackSocket.new(clean_host, site.port, str)
         elsif @socket_local == Site::EMPTY
-          socket = TCPSocket.new(clean_host, site.port)
+          socket = Celluloid::IO::TCPSocket.new(clean_host, site.port)
         else
-          socket = TCPSocket.new(clean_host, site.port, clean_local, @socket_local.port)
+          socket = Celluloid::IO::TCPSocket.new(clean_host, site.port, clean_local, @socket_local.port)
         end
         if @debug_dev
           @debug_dev << "! CONNECTION ESTABLISHED\n"
