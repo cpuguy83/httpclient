@@ -17,6 +17,7 @@ group :development do
   gem 'rubysspi'
   gem 'rubyntlm'
   gem 'rack-ntlm-test-service'
+  gem 'celluloid-io'
 end
 
 gemspec
